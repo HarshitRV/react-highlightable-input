@@ -47,5 +47,6 @@
 	},
 	"sideEffects": [
 		"**/*.css"
-	]
+	],
+	"license": "MIT"
 }
