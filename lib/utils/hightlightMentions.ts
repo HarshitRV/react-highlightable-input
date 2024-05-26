@@ -1,7 +1,7 @@
 export function highlightMentions(
 	text: string,
 	mentionPattern: RegExp,
-	highlighColor: string
+	highlightColor: string
 ): string {
 	// Remove existing span tags if any
 	text = text
@@ -9,7 +9,7 @@ export function highlightMentions(
 		.replace(/<\/span>/g, "");
 
 	const replacement = (match: string) =>
-		`<span style="color:${highlighColor};">${match}</span>`;
+		`<span style="color:${highlightColor};">${match}</span>`;
 	return text.replace(mentionPattern, replacement);
 }
 

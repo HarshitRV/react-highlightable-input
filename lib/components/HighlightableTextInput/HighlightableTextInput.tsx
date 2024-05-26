@@ -32,8 +32,8 @@ export function HighlightableTextInput({
 	return (
 		<div
 			id="highlightableTextInput-container"
-			style={{ position: "relative", ...styleWithoutPosition }}
 			className={styles.container}
+			style={{ position: "relative", ...styleWithoutPosition }}
 			tabIndex={0}
 			onFocus={() => {
 				if (placeholder === PLACEHOLDER || placeholder === placeholderText) {

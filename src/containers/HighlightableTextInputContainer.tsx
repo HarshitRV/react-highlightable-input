@@ -18,13 +18,19 @@ export function HighlightableTextInputContainer() {
 	};
 
 	return (
-		<HighlightableTextInput
-			placeholderText={`Type here...`}
-			inputRef={inputRef}
-			shadowRef={shadowRef}
-			setHiglightedContent={setHiglightedContent}
-			highlightedContent={highlightedContent}
-			onInput={onInput}
-		/>
+		<div style={{ border: "1px solid red", display: "inline-block" }}>
+			<HighlightableTextInput
+				placeholderText={`Type here...`}
+				inputRef={inputRef}
+				shadowRef={shadowRef}
+				setHiglightedContent={setHiglightedContent}
+				highlightedContent={highlightedContent}
+				onInput={onInput}
+				style={{
+					width: "500px",
+					height: "300px"
+				}}
+			/>
+		</div>
 	);
 }
