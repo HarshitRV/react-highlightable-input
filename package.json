@@ -10,6 +10,7 @@
 	"repository": {
 		"url": "https://github.com/HarshitRV/react-highlightable-input"
 	},
+	"keywords": ["react", "highlight", "input", "contenteditable"],
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc --p ./tsconfig-build.json && vite build",

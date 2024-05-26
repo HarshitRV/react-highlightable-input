@@ -12,59 +12,59 @@ npm install react-highlightable-input
 
 ```jsx
 import {
-	HighlightableTextInput,
-	highlightMentions,
-	cleanHtml,
+  HighlightableTextInput,
+  highlightMentions,
+  cleanHtml,
 } from "react-highlightable-input";
 import { useRef, useState } from "react";
 import "./App.css";
 
 function App() {
-	const inputRef = useRef < HTMLDivElement > null;
-	const shadowRef = useRef < HTMLDivElement > null;
-	const [highlightedContent, setHiglightedContent] = useState < string > "";
+  const inputRef = useRef <HTMLDivElement>(null);
+  const shadowRef = useRef<HTMLDivElement>(null);
+  const [highlightedContent, setHiglightedContent] = useState<string>("");
 
-	const onInput = () => {
-		if (inputRef.current) {
-			const value = inputRef.current.innerHTML;
-			const highlighted = highlightMentions(value, /@[\w]+/g, "#1d9bf0");
-			setHiglightedContent(highlighted);
-		}
-	};
+  const onInput = () => {
+	if (inputRef.current) {
+	  const value = inputRef.current.innerHTML;
+	  const highlighted = highlightMentions(value, /@[\w]+/g, "#1d9bf0");
+	  setHiglightedContent(highlighted);
+	}
+  };
 
-	const onSend = () => {
-		console.log("Send message:", cleanHtml(highlightedContent));
-	};
+  const onSend = () => {
+	console.log("Send message:", cleanHtml(highlightedContent));
+  };
 
-	return (
-		<div>
-			<div
-				style={{
-					border: "1px solid black",
-					padding: "5px",
-				}}>
-				<HighlightableTextInput
-					inputRef={inputRef}
-					shadowRef={shadowRef}
-					highlightedContent={highlightedContent}
-					setHiglightedContent={setHiglightedContent}
-					onInput={onInput}
-				/>
-			</div>
-			<button
-				onClick={onSend}
-				style={{
-					backgroundColor: "#4caf50",
-					color: "white",
-					padding: "5px 10px",
-					border: "none",
-					cursor: "pointer",
-					alignSelf: "flex-start",
-					marginTop: "10px",
-				}}>
-				Send
-			</button>
-		</div>
+  return (
+	<div>
+	  <div
+	   style={{
+	    border: "1px solid black",
+		padding: "5px",
+	  }}>
+	  <HighlightableTextInput
+	    inputRef={inputRef}
+		shadowRef={shadowRef}
+		highlightedContent={highlightedContent}
+		setHiglightedContent={setHiglightedContent}
+		onInput={onInput}
+	  />
+	  </div>
+		<button
+		  onClick={onSend}
+		  style={{
+		    backgroundColor: "#4caf50",
+			color: "white",
+			padding: "5px 10px",
+			border: "none",
+			cursor: "pointer",
+			alignSelf: "flex-start",
+			marginTop: "10px",
+			}}>
+			Send
+		</button>
+	  </div>
 	);
 }
 
@@ -75,11 +75,11 @@ export default App;
 
 ```jsx
 <HighlightableTextInput
-	inputRef={inputRef} // Ref to the input element
-	shadowRef={shadowRef} // Ref to the shadow element
-	highlightedContent={highlightedContent} // The content to be highlighted
-	setHiglightedContent={setHiglightedContent} // Function to set the highlighted content
-	onInput={onInput} // Function to be called when the input changes
+  inputRef={inputRef} // Ref to the input element
+  shadowRef={shadowRef} // Ref to the shadow element
+  highlightedContent={highlightedContent} // The content to be highlighted
+  setHiglightedContent={setHiglightedContent} // Function to set the highlighted content
+  onInput={onInput} // Function to be called when the input changes
 />
 ```
 
@@ -97,13 +97,13 @@ export default App;
 
 ```ts
 export interface HighlightableTextInputProps {
-	inputRef: React.RefObject<HTMLDivElement>;
-	shadowRef: React.RefObject<HTMLDivElement>;
-	highlightedContent: string;
-	placeholderText?: string;
-	onInput: (event: React.FormEvent<HTMLDivElement>) => void;
-	setHiglightedContent: (highlighted: string) => void;
-	style?: React.CSSProperties;
+  inputRef: React.RefObject<HTMLDivElement>;
+  shadowRef: React.RefObject<HTMLDivElement>;
+  highlightedContent: string; 
+  placeholderText?: string;
+  onInput: (event: React.FormEvent<HTMLDivElement>) => void;
+  setHiglightedContent: (highlighted: string) => void;
+  style?: React.CSSProperties;
 }
 ```
 
@@ -113,9 +113,9 @@ export interface HighlightableTextInputProps {
 
 ```ts
 function highlightMentions(
-	text: string,
-	mentionPattern: RegExp,
-	highlighColor: string
+  text: string,
+  mentionPattern: RegExp,
+  highlightColor: string
 ): string;
 ```
 
@@ -137,9 +137,9 @@ A new string where the mentions are highlighted with the specified color.
 
 ```ts
 function highlightText(
-	text: string,
-	pattern: RegExp,
-	style: React.CSSProperties
+  text: string,
+  pattern: RegExp,
+  style: React.CSSProperties
 ): string;
 ```
 
@@ -158,56 +158,60 @@ A new string where the mentions are styled with the specified styles.
 # Usage Instructions
 
 ## 1. Setting border and padding.
+
 If you want to add the border to the `react-highlightable-input` then wrap the `HighlightableTextInput` component with a `div` and add the border to the `div` element. Same goes for other styles like padding margin. Otherwise some unexpected styling issues may occur.
 
 ```jsx
 <div style={{ border: "1px solid black", padding: "5px" }}>
-    <HighlightableTextInput
-        inputRef={inputRef}
-        shadowRef={shadowRef}
-        highlightedContent={highlightedContent}
-        setHiglightedContent={setHiglightedContent}
-        onInput={onInput}
-    />
+  <HighlightableTextInput
+    inputRef={inputRef}
+	shadowRef={shadowRef}
+	highlightedContent={highlightedContent}
+	setHiglightedContent={setHiglightedContent}
+	onInput={onInput}
+  />
 </div>
 ```
 
 ## 2. Setting height and width.
+
 Width and height of the input div can be set in two ways
 
 ### 1. Via `style` props.
+
 ```jsx
 <div style={{ border: "1px solid black", padding: "5px" }}>
-    <HighlightableTextInput
-        inputRef={inputRef}
-        shadowRef={shadowRef}
-        highlightedContent={highlightedContent}
-        setHiglightedContent={setHiglightedContent}
-        onInput={onInput}
-        style={{
-			width: "500px",
-			height: "300px"
-		}}
-    />
+  <HighlightableTextInput
+	inputRef={inputRef}
+	shadowRef={shadowRef}
+	highlightedContent={highlightedContent}
+	setHiglightedContent={setHiglightedContent}
+	onInput={onInput}
+	style={{
+	  width: "500px",
+	  height: "300px",
+	}}
+  />
 </div>
 ```
 
 ### 2. Via input div id (`highlightableTextInput-container`)
+
 ```css
 #highlightableTextInput-container {
-    width: 500px;
-    height: 300px;
+  width: 500px;
+  height: 300px;
 }
 ```
 
 ```jsx
 <div style={{ border: "1px solid black", padding: "5px", display: "inline-block" }}>
-    <HighlightableTextInput
-        inputRef={inputRef}
-        shadowRef={shadowRef}
-        highlightedContent={highlightedContent}
-        setHiglightedContent={setHiglightedContent}
-        onInput={onInput}
+  <HighlightableTextInput
+    inputRef={inputRef}
+    shadowRef={shadowRef}
+    highlightedContent={highlightedContent}
+    setHiglightedContent={setHiglightedContent}
+    onInput={onInput}
 </div>
 ```
 
