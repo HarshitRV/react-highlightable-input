@@ -1,0 +1,69 @@
+.container {
+	width: calc(100% - 2px);
+	min-height: 44px;
+}
+
+.container:focus {
+	outline: 2px solid blue;
+}
+
+.inputDiv {
+	color: transparent;
+	caret-color: black;
+}
+
+.inputDiv,
+.shadowDiv {
+	position: absolute;
+	top: 0;
+	left: 0;
+	overflow-y: scroll;
+	width: 100%;
+	height: 100%;
+}
+
+.inputDiv:focus {
+	outline: none;
+}
+
+.inputDiv {
+	z-index: 1;
+	/* existing styles */
+	scrollbar-width: none; /* For Firefox */
+	-ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+.inputDiv::-webkit-scrollbar {
+	display: none; /* For Chrome, Safari and Opera */
+}
+
+/* For Chrome and Safari */
+.shadowDiv::-webkit-scrollbar {
+	width: 12px; /* width of the entire scrollbar */
+}
+
+.shadowDiv::-webkit-scrollbar-track {
+	background: #f1f1f1; /* color of the tracking area */
+}
+
+.shadowDiv::-webkit-scrollbar-thumb {
+	background-color: #888; /* color of the scroll thumb */
+	border-radius: 20px; /* roundness of the scroll thumb */
+	border: 3px solid #f1f1f1; /* creates padding around scroll thumb */
+}
+
+/* For Firefox */
+.shadowDiv {
+	scrollbar-width: thin; /* "auto" or "thin"  */
+	scrollbar-color: #888 #f1f1f1; /* scroll thumb and track */
+}
+
+/* For IE */
+shadowDiv {
+	-ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+shadowDiv::-ms-thumb {
+	background-color: #888;
+	border: 2px solid #f1f1f1;
+}
