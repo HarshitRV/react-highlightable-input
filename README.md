@@ -233,3 +233,7 @@ Width and height of the input div can be set in two ways
 ```
 
 **Note:** The `display: inline-block` is used to make the div element take the width and height of the child element.
+
+## Code Sandbox
+
+[![Edit react-highlightable-input-demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/p/devbox/react-highlightable-input-demo-798tz4?embed=1&file=%2Fsrc%2Fcomponents%2FHighlightMentions%2FHighlightMentions.tsx)
