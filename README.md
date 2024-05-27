@@ -1,6 +1,6 @@
 # react-highlightable-input
 
-A custom react input component that allows highlighting or styling of text as it is typed.
+A custom react input component that allows highlighting or styling of specific text as it is typed. For example, you can highlight mentions starting with @ symbol in a text input as the user types them.
 
 ## Install
 
@@ -155,6 +155,22 @@ This function takes a string of text, a regular expression pattern to match ment
 **Returns:**
 
 A new string where the mentions are styled with the specified styles.
+
+## Utility Functions
+
+### `cleanHtml`
+
+```ts
+function cleanHtml(html: string): string
+```
+
+**Parameters:**
+
+- `html`: The input HTML string.
+
+**Returns:**
+
+A new string where all HTML tags are removed, `<div>` tags are replaced with newlines, and `&lt;` and `&gt;` entities are replaced with `<` and `>` characters, respectively.
 
 ## Usage Instructions for the HighlightableTextInput component
 
