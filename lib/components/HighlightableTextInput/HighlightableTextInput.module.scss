@@ -8,8 +8,12 @@
 }
 
 .inputDiv {
-	color: transparent;
+	color: transparent !important;
 	caret-color: black;
+}
+
+.inputDiv * {
+	color: transparent !important;
 }
 
 .inputDiv,

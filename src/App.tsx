@@ -6,12 +6,12 @@ export default function App() {
 			<HighlightableTextInputContainer />
 			<br />
 			<br />
-			<input type="text" />
+			<input defaultValue={"hello"} type="text" />
 			<br />
 			<br />
 			<textarea
 				name=""
-				id=""></textarea>
+				id="">Some content</textarea>
 		</>
 	);
 }
