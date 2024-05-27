@@ -1,4 +1,4 @@
-# react-highlightable-input
+# react-highlightable-input ![NPM Version](https://img.shields.io/npm/v/react-highlightable-input) ![NPM Downloads](https://img.shields.io/npm/dw/react-highlightable-input) ![GitHub License](https://img.shields.io/github/license/harshitrv/react-highlightable-input)
 
 A custom react input component that allows highlighting or styling of specific text as it is typed. For example, you can highlight mentions starting with @ symbol in a text input as the user types them.
 
