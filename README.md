@@ -20,8 +20,8 @@ import { useRef, useState } from "react";
 import "./App.css";
 
 function App() {
- const inputRef = useRef <HTMLDivElement>(null);
- const shadowRef = useRef <HTMLDivElement>(null);
+ const inputRef = useRef<HTMLDivElement>(null);
+ const shadowRef = useRef<HTMLDivElement>(null);
  const [highlightedContent, setHiglightedContent] = useState<string>("");
 
  const onInput = () => {
@@ -49,6 +49,7 @@ function App() {
      highlightedContent={highlightedContent}
      setHiglightedContent={setHiglightedContent}
      onInput={onInput}
+     placeholderText="Highlight mentions with @ symbol"
     />
    </div>
    <button
