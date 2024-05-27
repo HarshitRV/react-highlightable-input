@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./HighlightableTextInput.module.scss";
 import { HighlightableTextInputProps } from "./types";
 
@@ -28,6 +28,12 @@ export function HighlightableTextInput({
 			shadowRef.current.scrollTop = e.currentTarget.scrollTop;
 		}
 	};
+
+	useEffect(() => {
+		if (inputRef.current && highlightedContent) {
+			inputRef.current.innerHTML = highlightedContent;
+		}
+	}, []); //eslint-disable-line
 
 	return (
 		<div

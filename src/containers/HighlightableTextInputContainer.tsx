@@ -5,7 +5,7 @@ import { highlightMentions } from "../../lib/utils";
 export function HighlightableTextInputContainer() {
 	const inputRef = useRef<HTMLDivElement>(null);
 	const shadowRef = useRef<HTMLDivElement>(null);
-	const [highlightedContent, setHiglightedContent] = useState<string>("");
+	const [highlightedContent, setHiglightedContent] = useState<string>(highlightMentions("hi @harshit", /@[\w]+/g, "#1d9bf0"));
 
 	const onInput = () => {
 		if (inputRef.current) {
@@ -18,7 +18,7 @@ export function HighlightableTextInputContainer() {
 	};
 
 	return (
-		<div style={{ border: "1px solid red", display: "inline-block" }}>
+		<div style={{ border: "1px solid black", padding: "5px" }}>
 			<HighlightableTextInput
 				placeholderText={`Type here...`}
 				inputRef={inputRef}
@@ -26,10 +26,6 @@ export function HighlightableTextInputContainer() {
 				setHiglightedContent={setHiglightedContent}
 				highlightedContent={highlightedContent}
 				onInput={onInput}
-				style={{
-					width: "500px",
-					height: "300px"
-				}}
 			/>
 		</div>
 	);
