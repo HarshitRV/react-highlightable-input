@@ -15,6 +15,8 @@ src
 
 # Editor directories and files
 .vscode/*
+.cursor/*
+.kira/*
 !.vscode/extensions.json
 .idea
 .DS_Store
@@ -29,5 +31,5 @@ tsconfig.json
 tsconfig-build.json
 tsconfig.node.json
 vite.config.ts
+eslint.config.js
 .nvmrc
-.eslintrc.cjs

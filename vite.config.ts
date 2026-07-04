@@ -31,6 +31,7 @@ export default defineConfig({
 				"react-dom",
 				"react/jsx-runtime",
 				"react-compiler-runtime",
+				"sanitize-html",
 			],
 			input: Object.fromEntries(
 				glob

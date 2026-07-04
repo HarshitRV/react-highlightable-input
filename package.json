@@ -31,7 +31,19 @@
 		"preview": "vite preview",
 		"test": "vitest run",
 		"test:watch": "vitest",
-		"prepublishOnly": "pnpm run build"
+		"commit": "cz",
+		"release": "commit-and-tag-version",
+		"release:minor": "commit-and-tag-version --release-as minor",
+		"release:major": "commit-and-tag-version --release-as major",
+		"release:patch": "commit-and-tag-version --release-as patch",
+		"release:dry": "commit-and-tag-version --dry-run",
+		"prepublishOnly": "pnpm run build",
+		"prepare": "husky"
+	},
+	"config": {
+		"commitizen": {
+			"path": "cz-conventional-changelog"
+		}
 	},
 	"packageManager": "pnpm@11.1.2",
 	"engines": {
@@ -47,6 +59,8 @@
 	},
 	"devDependencies": {
 		"@babel/core": "7.29.7",
+		"@commitlint/cli": "21.2.0",
+		"@commitlint/config-conventional": "21.2.0",
 		"@eslint/js": "10.0.1",
 		"@rolldown/plugin-babel": "0.2.3",
 		"@testing-library/jest-dom": "6.9.1",
@@ -58,10 +72,14 @@
 		"@types/sanitize-html": "2.16.1",
 		"@vitejs/plugin-react": "6.0.3",
 		"babel-plugin-react-compiler": "1.0.0",
+		"commit-and-tag-version": "12.7.3",
+		"commitizen": "4.3.2",
+		"cz-conventional-changelog": "3.3.0",
 		"eslint": "10.6.0",
 		"eslint-plugin-react-hooks": "7.1.1",
 		"glob": "13.0.6",
 		"globals": "17.7.0",
+		"husky": "9.1.7",
 		"jsdom": "29.1.1",
 		"react": "19.2.7",
 		"react-dom": "19.2.7",

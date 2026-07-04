@@ -1,0 +1,17 @@
+{
+	"types": [
+		{ "type": "feat", "section": "Features" },
+		{ "type": "fix", "section": "Bug Fixes" },
+		{ "type": "perf", "section": "Performance" },
+		{ "type": "refactor", "section": "Refactoring" },
+		{ "type": "docs", "section": "Documentation" },
+		{ "type": "build", "section": "Build System" },
+		{ "type": "ci", "section": "Continuous Integration" },
+		{ "type": "revert", "section": "Reverts" },
+		{ "type": "test", "section": "Tests", "hidden": true },
+		{ "type": "style", "section": "Styles", "hidden": true },
+		{ "type": "chore", "section": "Chores", "hidden": true }
+	],
+	"commitUrlFormat": "https://github.com/HarshitRV/react-highlightable-input/commit/{{hash}}",
+	"compareUrlFormat": "https://github.com/HarshitRV/react-highlightable-input/compare/{{previousTag}}...{{currentTag}}"
+}
