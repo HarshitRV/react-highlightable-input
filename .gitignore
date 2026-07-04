@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# pnpm's local content-addressable store (created when the home store can't be used)
+.pnpm-store/
+
+# npm pack output
+*.tgz
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

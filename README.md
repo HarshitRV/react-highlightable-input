@@ -1,239 +1,170 @@
-# react-highlightable-input ![NPM Version](https://img.shields.io/npm/v/react-highlightable-input) ![NPM Downloads](https://img.shields.io/npm/dw/react-highlightable-input) ![GitHub License](https://img.shields.io/github/license/harshitrv/react-highlightable-input)
+# react-highlightable-input
 
-A custom react input component that allows highlighting or styling of specific text as it is typed. For example, you can highlight mentions starting with @ symbol in a text input as the user types them.
+![NPM Version](https://img.shields.io/npm/v/react-highlightable-input) ![NPM Downloads](https://img.shields.io/npm/dw/react-highlightable-input) ![GitHub License](https://img.shields.io/github/license/harshitrv/react-highlightable-input)
+
+A React input that highlights or styles specific text **as you type** - for example, colouring `@mentions` in a message box.
+
+- Highlight-as-you-type using any regex + colour (or full CSS style)
+- Accessible: exposes a proper `textbox` role, `aria-label`, and `aria-placeholder`
+- Ships a `cleanHtml` helper to get plain text back out
+- Works with **React 18 and 19** (`react`/`react-dom` `^18.2.0 || ^19.0.0`) and is built with the React Compiler
+- Fully typed (TypeScript)
+
+[Try it on CodeSandbox](https://codesandbox.io/p/devbox/react-highlightable-input-demo-798tz4?embed=1&file=%2Fsrc%2Fcomponents%2FHighlightMentions%2FHighlightMentions.tsx)
 
 ## Install
 
 ```bash
 npm install react-highlightable-input
+# or
+pnpm add react-highlightable-input
 ```
 
-## Usage
+## Quick start
 
-```jsx
+```tsx
 import {
- HighlightableTextInput,
- highlightMentions,
- cleanHtml,
+  HighlightableTextInput,
+  highlightMentions,
+  cleanHtml,
 } from "react-highlightable-input";
 import { useRef, useState } from "react";
-import "./App.css";
 
 function App() {
- const inputRef = useRef<HTMLDivElement>(null);
- const shadowRef = useRef<HTMLDivElement>(null);
- const [highlightedContent, setHiglightedContent] = useState<string>("");
+  const inputRef = useRef<HTMLDivElement>(null);
+  const shadowRef = useRef<HTMLDivElement>(null);
+  const [highlightedContent, setHighlightedContent] = useState("");
 
- const onInput = () => {
-  if (inputRef.current) {
-   const value = inputRef.current.innerHTML;
-   const highlighted = highlightMentions(value, /@[\w]+/g, "#1d9bf0");
-   setHiglightedContent(highlighted);
-  }
- };
+  const onInput = () => {
+    if (!inputRef.current) return;
+    const value = inputRef.current.innerHTML;
+    setHighlightedContent(highlightMentions(value, /@[\w]+/g, "#1d9bf0"));
+  };
 
- const onSend = () => {
-  console.log("Send message:", cleanHtml(highlightedContent));
- };
+  const onSend = () => {
+    // cleanHtml strips the highlight markup back to plain text
+    console.log("Send message:", cleanHtml(highlightedContent));
+  };
 
- return (
-  <div>
-   <div
-    style={{
-     border: "1px solid black",
-     padding: "5px",
-    }}>
-    <HighlightableTextInput
-     inputRef={inputRef}
-     shadowRef={shadowRef}
-     highlightedContent={highlightedContent}
-     setHiglightedContent={setHiglightedContent}
-     onInput={onInput}
-     placeholderText="Highlight mentions with @ symbol"
-    />
-   </div>
-   <button
-    onClick={onSend}
-    style={{
-     backgroundColor: "#4caf50",
-     color: "white",
-     padding: "5px 10px",
-     border: "none",
-     cursor: "pointer",
-     alignSelf: "flex-start",
-     marginTop: "10px",
-    }}>
-    Send
-   </button>
-  </div>
- );
+  return (
+    <div>
+      <div style={{ border: "1px solid black", padding: "5px" }}>
+        <HighlightableTextInput
+          inputRef={inputRef}
+          shadowRef={shadowRef}
+          highlightedContent={highlightedContent}
+          setHighlightedContent={setHighlightedContent}
+          onInput={onInput}
+          placeholderText="Highlight mentions with @ symbol"
+        />
+      </div>
+      <button onClick={onSend}>Send</button>
+    </div>
+  );
 }
 
 export default App;
 ```
 
-## A closer look at the `HighlightableTextInput` component
+## How it works
 
-```jsx
-<HighlightableTextInput
- inputRef={inputRef} // Ref to the input element
- shadowRef={shadowRef} // Ref to the shadow element
- highlightedContent={highlightedContent} // The content to be highlighted
- setHiglightedContent={setHiglightedContent} // Function to set the highlighted content
- onInput={onInput} // Function to be called when the input changes
-/>
-```
+The component renders two overlaid layers inside a positioned container:
 
-## Props
+- an **editable layer** (`inputRef`) where the user types - its text is transparent, only the caret is visible
+- a **shadow layer** (`shadowRef`) that displays your highlighted HTML underneath the caret
 
-| Prop Name              | Type                                               | Description                                  |
-| ---------------------- | -------------------------------------------------- | -------------------------------------------- |
-| `inputRef`             | `React.RefObject<HTMLDivElement>`                  | A reference to the input element.            |
-| `shadowRef`            | `React.RefObject<HTMLDivElement>`                  | A reference to the shadow element.           |
-| `highlightedContent`   | `string`                                           | The content that should be highlighted.      |
-| `placeholderText`      | `string` (optional)                                | The placeholder text for the input element.  |
-| `onInput`              | `(event: React.FormEvent<HTMLDivElement>) => void` | The event handler for the input event.       |
-| `setHiglightedContent` | `(highlighted: string) => void`                    | The function to set the highlighted content. |
-| `style`                | `React.CSSProperties` (optional)                   | The CSS styles for the input element.        |
+On every input you convert the raw text into highlighted HTML (e.g. with `highlightMentions`) and store it in `highlightedContent`; the shadow layer renders that markup so highlights line up with what's being typed.
+
+## API
+
+### `<HighlightableTextInput />`
+
+| Prop                    | Type                                               | Description                                                              |
+| ----------------------- | -------------------------------------------------- | ------------------------------------------------------------------------ |
+| `inputRef`              | `React.RefObject<HTMLDivElement \| null>`          | Ref to the editable layer. Read `inputRef.current.innerHTML` in `onInput`. |
+| `shadowRef`             | `React.RefObject<HTMLDivElement \| null>`          | Ref to the shadow (highlight) layer.                                     |
+| `highlightedContent`    | `string`                                           | The highlighted HTML to display.                                         |
+| `setHighlightedContent` | `(highlighted: string) => void`                    | Setter for `highlightedContent` (used to clear on blur).                 |
+| `onInput`               | `(event: React.FormEvent<HTMLDivElement>) => void` | Called on every input event.                                             |
+| `placeholderText`       | `string` _(optional)_                              | Placeholder shown while empty and unfocused.                             |
+| `ariaLabel`             | `string` _(optional)_                              | Accessible name for the editable region. Defaults to `"Highlightable text input"`. |
+| `style`                 | `React.CSSProperties` _(optional)_                 | Styles for the container (its `position` is managed internally).         |
 
 ```ts
 export interface HighlightableTextInputProps {
- inputRef: React.RefObject<HTMLDivElement>;
- shadowRef: React.RefObject<HTMLDivElement>;
- highlightedContent: string;
- placeholderText?: string;
- onInput: (event: React.FormEvent<HTMLDivElement>) => void;
- setHiglightedContent: (highlighted: string) => void;
- style?: React.CSSProperties;
+  inputRef: React.RefObject<HTMLDivElement | null>;
+  shadowRef: React.RefObject<HTMLDivElement | null>;
+  highlightedContent: string;
+  placeholderText?: string;
+  ariaLabel?: string;
+  onInput: (event: React.FormEvent<HTMLDivElement>) => void;
+  setHighlightedContent: (highlighted: string) => void;
+  style?: React.CSSProperties;
 }
 ```
 
-## Highlight Functions
+### Helper functions
 
-### `highlightMentions`
-
-```ts
-function highlightMentions(
- text: string,
- mentionPattern: RegExp,
- highlightColor: string
-): string;
-```
-
-This function takes a string of text, a regular expression pattern to match mentions, and a color to highlight the mentions. It returns a new string where the mentions are wrapped in a `span` tag with the specified color.
-
-**Parameters:**
-
-- `text`: The input text.
-- `mentionPattern`: The regular expression pattern to match mentions.
-- `highlightColor`: The color to highlight the mentions.
-
-**Returns:**
-
-A new string where the mentions are highlighted with the specified color.
-
----
-
-### `highlightText`
+| Function                                       | Returns  | Description                                                                                     |
+| ---------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------- |
+| `highlightMentions(text, pattern, color)`      | `string` | Wraps every `pattern` match in a `<span>` coloured with `color`.                                |
+| `highlightText(text, pattern, style)`          | `string` | Wraps every `pattern` match in a `<span>` styled with a `React.CSSProperties` object.           |
+| `cleanHtml(html)`                              | `string` | Strips highlight markup back to plain text (removes tags, turns `<div>` into newlines, decodes `&lt;`/`&gt;`). |
 
 ```ts
-function highlightText(
- text: string,
- pattern: RegExp,
- style: React.CSSProperties
-): string;
+function highlightMentions(text: string, pattern: RegExp, color: string): string;
+function highlightText(text: string, pattern: RegExp, style: React.CSSProperties): string;
+function cleanHtml(html: string): string;
 ```
 
-This function takes a string of text, a regular expression pattern to match mentions, and a style object to style the mentions. It returns a new string where the mentions are wrapped in a `span` tag with the specified styles.
-
-**Parameters:**
-
-- `text`: The input text.
-- `mentionPattern`: The regular expression pattern to match mentions.
-- `style`: The style object to style the mentions. This should be a `React.CSSProperties` object.
-
-**Returns:**
-
-A new string where the mentions are styled with the specified styles.
-
-## Utility Functions
-
-### `cleanHtml`
+Example with a custom style instead of a single colour:
 
 ```ts
-function cleanHtml(html: string): string
+highlightText("hi @harshit", /@[\w]+/g, { color: "red", fontWeight: "bold" });
+// => 'hi <span style="color: red; font-weight: bold">@harshit</span>'
 ```
 
-**Parameters:**
+## Styling and sizing
 
-- `html`: The input HTML string.
+Apply borders, padding, and margins to a **wrapping element**, not the component itself, to avoid layout glitches:
 
-**Returns:**
-
-A new string where all HTML tags are removed, `<div>` tags are replaced with newlines, and `&lt;` and `&gt;` entities are replaced with `<` and `>` characters, respectively.
-
-## Usage Instructions for the HighlightableTextInput component
-
-### 1. Setting border and padding
-
-If you want to add the border to the `react-highlightable-input` then wrap the `HighlightableTextInput` component with a `div` and add the border to the `div` element. Same goes for other styles like padding margin. Otherwise some unexpected styling issues may occur.
-
-```jsx
+```tsx
 <div style={{ border: "1px solid black", padding: "5px" }}>
- <HighlightableTextInput
-  inputRef={inputRef}
-  shadowRef={shadowRef}
-  highlightedContent={highlightedContent}
-  setHiglightedContent={setHiglightedContent}
-  onInput={onInput}
- />
+  <HighlightableTextInput {...props} />
 </div>
 ```
 
-### 2. Setting height and width
+Set width/height in either of two ways.
 
-Width and height of the input div can be set in two ways
+**Option A - the `style` prop:**
 
-### 1. Via `style` props
-
-```jsx
+```tsx
 <div style={{ border: "1px solid black", padding: "5px" }}>
- <HighlightableTextInput
-  inputRef={inputRef}
-  shadowRef={shadowRef}
-  highlightedContent={highlightedContent}
-  setHiglightedContent={setHiglightedContent}
-  onInput={onInput}
-  style={{
-   width: "500px",
-   height: "300px",
-  }}
- />
+  <HighlightableTextInput {...props} style={{ width: "500px", height: "300px" }} />
 </div>
 ```
 
-### 2. Via HighlightableTextInput div id (`highlightableTextInput-container`)
+**Option B - target the container id `highlightableTextInput-container`:**
 
 ```css
 #highlightableTextInput-container {
- width: 500px;
- height: 300px;
+  width: 500px;
+  height: 300px;
 }
 ```
 
-```jsx
+```tsx
 <div style={{ border: "1px solid black", padding: "5px", display: "inline-block" }}>
-  <HighlightableTextInput
-    inputRef={inputRef}
-    shadowRef={shadowRef}
-    highlightedContent={highlightedContent}
-    setHiglightedContent={setHiglightedContent}
-    onInput={onInput}
+  <HighlightableTextInput {...props} />
 </div>
 ```
 
-**Note:** The `display: inline-block` is used to make the div element take the width and height of the child element.
+> `display: inline-block` on the wrapper makes it shrink to the sized child.
 
-## Code Sandbox
+## Migrating from v1
 
-[![Edit react-highlightable-input-demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/p/devbox/react-highlightable-input-demo-798tz4?embed=1&file=%2Fsrc%2Fcomponents%2FHighlightMentions%2FHighlightMentions.tsx)
+- The `setHiglightedContent` prop was renamed to **`setHighlightedContent`** (typo fix). Rename it in your usage.
+
+## License
+
+MIT

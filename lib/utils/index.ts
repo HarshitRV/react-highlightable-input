@@ -1,2 +1,2 @@
 export * from "./cleanHtml";
-export * from "./hightlightMentions";
+export * from "./highlightMentions";

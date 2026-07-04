@@ -1,23 +1,25 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./HighlightableTextInput.module.scss";
 import { HighlightableTextInputProps } from "./types";
 
-// eslint-disable-next-line prefer-const
-export let PLACEHOLDER = "Start typing...";
+const DEFAULT_PLACEHOLDER = "Start typing...";
+const DEFAULT_ARIA_LABEL = "Highlightable text input";
 
 export function HighlightableTextInput({
-	placeholderText = PLACEHOLDER,
+	placeholderText = DEFAULT_PLACEHOLDER,
+	ariaLabel = DEFAULT_ARIA_LABEL,
 	inputRef,
 	shadowRef,
-	setHiglightedContent,
+	setHighlightedContent,
 	onInput,
 	highlightedContent,
 	style,
 	...props
-}: HighlightableTextInputProps): JSX.Element {
-	const [placeholder, setPlaceholder] = useState<string>(placeholderText);
+}: HighlightableTextInputProps): React.JSX.Element {
+	const [isFocused, setIsFocused] = useState<boolean>(false);
 
-	// remove position property from style prop
+	// The container establishes the positioning context for the overlaid
+	// editable and shadow layers, so `position` cannot be overridden.
 	const styleWithoutPosition = { ...style };
 	if (style && style.position) {
 		delete styleWithoutPosition.position;
@@ -33,42 +35,43 @@ export function HighlightableTextInput({
 		if (inputRef.current && highlightedContent) {
 			inputRef.current.innerHTML = highlightedContent;
 		}
-	}, []); //eslint-disable-line
+		// Seed the editable content once on mount; re-running would overwrite user edits.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const showPlaceholder = !highlightedContent && !isFocused;
 
 	return (
 		<div
 			id="highlightableTextInput-container"
 			className={styles.container}
 			style={{ position: "relative", ...styleWithoutPosition }}
-			tabIndex={0}
-			onFocus={() => {
-				if (placeholder === PLACEHOLDER || placeholder === placeholderText) {
-					setPlaceholder(() => "");
-				}
-			}}
-			onBlur={() => {
-				if (placeholder === "") {
-					setPlaceholder(() => placeholderText ?? PLACEHOLDER);
-				}
-
-				if (inputRef.current?.textContent === "") {
-					setHiglightedContent("");
-				}
-			}}
 			{...props}>
 			<div
-				onScroll={handleScroll}
-				className={`${styles.inputDiv}`}
+				className={styles.inputDiv}
 				ref={inputRef}
 				contentEditable
+				role="textbox"
+				aria-multiline="true"
+				aria-label={ariaLabel}
+				aria-placeholder={placeholderText}
+				onScroll={handleScroll}
 				onInput={onInput}
+				onFocus={() => setIsFocused(true)}
+				onBlur={() => {
+					setIsFocused(false);
+					if (inputRef.current?.textContent === "") {
+						setHighlightedContent("");
+					}
+				}}
 				suppressContentEditableWarning
 			/>
 			<div
-				className={`${styles.shadowDiv}`}
+				className={styles.shadowDiv}
 				ref={shadowRef}
+				aria-hidden="true"
 				dangerouslySetInnerHTML={{
-					__html: highlightedContent || placeholder,
+					__html: showPlaceholder ? placeholderText : highlightedContent,
 				}}
 			/>
 		</div>

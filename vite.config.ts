@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import react, { reactCompilerPreset } from "@vitejs/plugin-react";
+import babel from "@rolldown/plugin-babel";
 import { extname, relative, resolve } from "path";
 import dts from "vite-plugin-dts";
 import { fileURLToPath } from "node:url";
@@ -7,7 +8,17 @@ import { libInjectCss } from "vite-plugin-lib-inject-css";
 import { glob } from "glob";
 
 export default defineConfig({
-	plugins: [react(), libInjectCss(), dts({ include: ["lib"] })],
+	plugins: [
+		react(),
+		// React Compiler runs through Babel. `target: "18"` emits code that uses
+		// `react-compiler-runtime`, so the optimized output also works on React 18.
+		babel({ presets: [reactCompilerPreset({ target: "18" })] }),
+		libInjectCss(),
+		dts({
+			include: ["lib"],
+			exclude: ["lib/**/*.test.{ts,tsx}", "lib/**/__tests__/**"],
+		}),
+	],
 	build: {
 		copyPublicDir: false,
 		lib: {
@@ -15,11 +26,20 @@ export default defineConfig({
 			formats: ["es"],
 		},
 		rollupOptions: {
-			external: ["react", "react/jsx-runtime"],
+			external: [
+				"react",
+				"react-dom",
+				"react/jsx-runtime",
+				"react-compiler-runtime",
+			],
 			input: Object.fromEntries(
 				glob
 					.sync("lib/**/*.{ts,tsx}", {
-						ignore: ["lib/**/*.d.ts"],
+						ignore: [
+							"lib/**/*.d.ts",
+							"lib/**/*.test.{ts,tsx}",
+							"lib/**/__tests__/**",
+						],
 					})
 					.map((file) => [
 						// The name of the entry point
@@ -39,11 +59,6 @@ export default defineConfig({
 	css: {
 		modules: {
 			localsConvention: "camelCaseOnly",
-		},
-		preprocessorOptions: {
-			scss: {
-				additionalData: `@import "src/styles/__variables.scss";`,
-			},
 		},
 	},
 });

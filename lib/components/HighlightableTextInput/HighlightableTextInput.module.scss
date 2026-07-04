@@ -3,10 +3,6 @@
 	min-height: 44px;
 }
 
-.container:focus {
-	outline: 2px solid blue;
-}
-
 .inputDiv {
 	color: transparent !important;
 	caret-color: black;
@@ -26,8 +22,9 @@
 	height: 100%;
 }
 
-.inputDiv:focus {
-	outline: none;
+.inputDiv:focus-visible {
+	outline: 2px solid blue;
+	outline-offset: 2px;
 }
 
 .inputDiv {
