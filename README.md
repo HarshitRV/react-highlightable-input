@@ -1,6 +1,6 @@
 # react-highlightable-input
 
-NPM Version NPM Downloads GitHub License
+![NPM Version](https://img.shields.io/npm/v/react-highlightable-input) ![NPM Downloads](https://img.shields.io/npm/dw/react-highlightable-input) ![GitHub License](https://img.shields.io/github/license/harshitrv/react-highlightable-input)
 
 A React input that highlights or styles specific text **as you type** - for example, colouring `@mentions` in a message box.
 
